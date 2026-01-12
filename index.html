@@ -1,164 +1,100 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÖZER AŞİRETİ | AKILLI KARARGAH</title>
-    <style>
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #0a192f; color: #fff; overflow: hidden; }
-        #girisEkrani { display: flex; align-items: center; justify-content: center; height: 100vh; background: radial-gradient(circle, #1a365d 0%, #0a192f 100%); position: fixed; width: 100%; top: 0; left: 0; z-index: 9999; }
-        .box { background: white; padding: 35px; border-radius: 25px; width: 330px; text-align: center; border-top: 10px solid #b30000; color: #333; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        input { width: 100%; padding: 15px; margin: 15px 0; border-radius: 30px; border: 2px solid #ddd; text-align: center; outline: none; box-sizing: border-box; font-size: 16px; color: #333; }
-        button { background: #1b5e20; color: white; border: none; padding: 15px; width: 100%; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        
-        #meydanEkrani { display: none; background: #f0f2f5; height: 100vh; flex-direction: column; }
-        .header { background: #0a192f; color: gold; padding: 15px; text-align: center; border-bottom: 4px solid #ffd700; flex-shrink: 0; }
-        .chat-area { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; max-width: 850px; margin: 0 auto; width: 100%; box-sizing: border-box; }
-        
-        .msg { max-width: 85%; padding: 12px 18px; border-radius: 18px; color: #333; position: relative; font-size: 15px; line-height: 1.5; margin-bottom: 5px; }
-        .msg-lider { align-self: flex-start; background: #fffdf0; border: 2px solid #ffd700; border-radius: 0 20px 20px 20px; box-shadow: 4px 4px 10px rgba(0,0,0,0.1); }
-        .msg-bot { align-self: flex-end; background: white; border-right: 8px solid #1b5e20; border-radius: 20px 20px 0 20px; box-shadow: -4px 4px 10px rgba(0,0,0,0.05); }
-        
-        .name { font-weight: bold; font-size: 11px; display: block; margin-bottom: 4px; text-transform: uppercase; color: #1b5e20; }
-        .input-bar { background: white; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #ddd; flex-shrink: 0; }
-        #mInp { flex: 1; border-radius: 30px; border: 1px solid #ccc; padding: 10px 20px; color: #333; background: #fff; }
-        #durum { color: #1b5e20; text-align: center; font-size: 14px; display: none; font-weight: bold; padding: 10px; background: #e8f5e9; }
-    </style>
+<meta charset="UTF-8">
+<title>ÖZER DİVANI</title>
+<style>
+body{margin:0;font-family:Segoe UI;background:#0a192f;color:#fff}
+#login,#chat{height:100vh;display:flex;align-items:center;justify-content:center}
+#chat{display:none;flex-direction:column;background:#f0f2f5;color:#000}
+.box{background:#fff;padding:30px;border-radius:20px;width:320px;text-align:center}
+.chat-area{flex:1;overflow:auto;width:100%;max-width:900px;padding:20px}
+.msg{padding:12px 16px;border-radius:16px;margin-bottom:8px;max-width:80%}
+.lider{background:#fff3cd;border:2px solid gold}
+.bot{background:#fff;border-right:6px solid #1b5e20;margin-left:auto}
+.input{display:flex;gap:10px;padding:10px;background:#fff;width:100%}
+input{flex:1;padding:10px;border-radius:20px;border:1px solid #ccc}
+button{padding:10px 20px;border-radius:20px;border:none;background:#b30000;color:#fff}
+</style>
 </head>
 <body>
 
-    <div id="girisEkrani">
-        <div class="box">
-            <h2 style="margin:0;">ÖZER DİVANI</h2>
-            <p style="font-size:12px; color:#666;">Karargah Kapısı</p>
-            <input type="text" id="isimGiris" placeholder="İsminizi Yazın">
-            <button type="button" onclick="divanaGir()">KARARGAHA GİR</button>
-        </div>
-    </div>
+<div id="login">
+  <div class="box">
+    <h2>ÖZER DİVANI</h2>
+    <input id="isim" placeholder="İsminiz">
+    <button onclick="gir()">GİR</button>
+  </div>
+</div>
 
-    <div id="meydanEkrani">
-        <div class="header"><h2 id="baslik" style="margin:0;">BÜYÜK MEYDAN</h2></div>
-        <div id="durum">Yapay Zeka Kelam Hazırlıyor...</div>
-        <div class="chat-area" id="chatbox"></div>
-        <div class="input-bar">
-            <input type="text" id="mInp" placeholder="Bir isme seslenin...">
-            <button type="button" style="width:auto; padding: 0 30px; background:#b30000; color:white; border-radius:30px; border:none; cursor:pointer; font-weight:bold;" onclick="gonder()">GÖNDER</button>
-        </div>
-    </div>
+<div id="chat">
+  <h3 id="baslik"></h3>
+  <div id="durum" style="display:none;color:green">Yapay zekâ konuşuyor…</div>
+  <div id="alan" class="chat-area"></div>
+  <div class="input">
+    <input id="mesaj" placeholder="Bir isme seslen...">
+    <button onclick="gonder()">Gönder</button>
+  </div>
+</div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-    <script>
-        // Bilgileriniz
-        const OPENAI_KEY = "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";
-        const KANAL = "ozer_openai_divan_v2";
+<script>
+const firebaseConfig = {
+  apiKey: "FIREBASE_KEY",
+  authDomain: "ozer-asireti-portal.firebaseapp.com",
+  projectId: "ozer-asireti-portal"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBJJEJO1FJCvPMF7n5LXX4DYrf3jBEvTlI",
-            authDomain: "ozer-asireti-portal.firebaseapp.com",
-            projectId: "ozer-asireti-portal",
-            storageBucket: "ozer-asireti-portal.firebasestorage.app",
-            messagingSenderId: "76823168812",
-            appId: "1:76823168812:web:e21ab7461ac3eec81b4e89"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+const KANAL="ozer_divan";
+const bots=[
+"Kerem Özer","Hacı Abdullah Özer","Faruk Özer","Ahmet Özer",
+"Hacı Remzi Özer","Ali Özer","Mahmut Enes Demiroğlu","Mervan Cengiz"
+];
 
-        let myAd = ""; 
-        let liderMi = false;
-        const bots = ["Kerem Özer", "Ali Özer", "Ahmet Özer", "Mahmut Enes Demiroğlu", "Ömer Faruk Baylan", "Mustafa Dostdoğru", "Hacı Abdullah Özer"];
+let ad="",lider=false;
 
-        function divanaGir() {
-            const inputVal = document.getElementById('isimGiris').value.trim();
-            if(inputVal.length < 2) {
-                alert("Lütfen geçerli bir isim girin.");
-                return;
-            }
-            
-            myAd = inputVal;
-            liderMi = myAd.toLowerCase().includes("sait");
-            
-            // Ekranları değiştir
-            document.getElementById('girisEkrani').style.display = 'none';
-            document.getElementById('meydanEkrani').style.display = 'flex';
-            document.getElementById('baslik').innerHTML = myAd + (liderMi ? " <span style='color:gold;'>👑</span>" : "");
-            
-            dinle();
-        }
+function gir(){
+  ad=document.getElementById("isim").value.trim();
+  if(ad.length<2) return alert("İsim gir");
+  lider=ad.toLowerCase().includes("sait");
+  document.getElementById("login").style.display="none";
+  document.getElementById("chat").style.display="flex";
+  document.getElementById("baslik").innerHTML=ad+(lider?" 👑":"");
+  dinle();
+}
 
-        function dinle() {
-            db.collection(KANAL).orderBy("tarih", "asc").limitToLast(50).onSnapshot((sn) => {
-                const box = document.getElementById('chatbox');
-                box.innerHTML = "";
-                sn.forEach(doc => {
-                    const d = doc.data();
-                    if(d.isim && d.mesaj) {
-                        const isSait = d.isim.toLowerCase().includes("sait");
-                        box.innerHTML += `<div class="msg ${isSait ? 'msg-lider' : 'msg-bot'}">
-                            <span class="name">${d.isim}</span>
-                            <div>${d.mesaj}</div>
-                        </div>`;
-                    }
-                });
-                box.scrollTop = box.scrollHeight;
-            }, (error) => {
-                console.error("Firebase Hatası: ", error);
-            });
-        }
+function dinle(){
+  db.collection(KANAL).orderBy("t","asc").limit(50)
+  .onSnapshot(s=>{
+    alan.innerHTML="";
+    s.forEach(d=>{
+      let m=d.data();
+      alan.innerHTML+=`<div class="msg ${m.isim.toLowerCase().includes("sait")?"lider":"bot"}">
+      <b>${m.isim}</b><br>${m.mesaj}</div>`;
+    });
+    alan.scrollTop=alan.scrollHeight;
+  });
+}
 
-        async function gonder() {
-            const msgInput = document.getElementById('mInp');
-            const m = msgInput.value.trim();
-            if(!m) return;
-            
-            msgInput.value = "";
-            
-            try {
-                await db.collection(KANAL).add({ 
-                    isim: myAd, 
-                    mesaj: m, 
-                    tarih: firebase.firestore.FieldValue.serverTimestamp() 
-                });
-
-                // Bot ismi geçiyor mu ve gönderen Sait Bey mi?
-                let hBot = bots.find(b => m.toLowerCase().includes(b.toLowerCase().split(' ')[0]));
-                
-                if(hBot && liderMi) {
-                    document.getElementById('durum').style.display = "block";
-                    
-                    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${OPENAI_KEY}`
-                        },
-                        body: JSON.stringify({
-                            model: "gpt-3.5-turbo",
-                            messages: [
-                                { role: "system", content: `Sen Özer aşiretinden ${hBot} isimli birisin. Sait Özer senin liderindir. Ona karşı çok saygılı, bilgece ve aşiret kültürüne uygun kısa bir cevap ver.` },
-                                { role: "user", content: m }
-                            ]
-                        })
-                    });
-
-                    const data = await response.json();
-                    if(data.choices && data.choices[0]) {
-                        const aiMesaj = data.choices[0].message.content;
-                        await db.collection(KANAL).add({ 
-                            isim: hBot, 
-                            mesaj: aiMesaj, 
-                            tarih: firebase.firestore.FieldValue.serverTimestamp() 
-                        });
-                    }
-                }
-            } catch (e) {
-                console.error("Gönderim Hatası: ", e);
-            } finally {
-                document.getElementById('durum').style.display = "none";
-            }
-        }
-    </script>
+async function gonder(){
+  let m=mesaj.value.trim();
+  if(!m) return;
+  mesaj.value="";
+  await db.collection(KANAL).add({isim:ad,mesaj:m,t:firebase.firestore.FieldValue.serverTimestamp()});
+  let bot=bots.find(b=>m.toLowerCase().includes(b.split(" ")[0].toLowerCase()));
+  if(bot && lider){
+    durum.style.display="block";
+    let r=await fetch("api.php",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({bot:bot,mesaj:m})});
+    let j=await r.json();
+    await db.collection(KANAL).add({isim:bot,mesaj:j.reply,t:firebase.firestore.FieldValue.serverTimestamp()});
+    durum.style.display="none";
+  }
+}
+</script>
 </body>
 </html>
