@@ -3,38 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÖZER AŞİRETİ | ÖZEL KARARGAH</title>
+    <title>ÖZER AŞİRETİ | AKILLI DİVAN</title>
     <style>
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #0a192f; color: #fff; overflow: hidden; }
         #girisEkrani { display: flex; align-items: center; justify-content: center; height: 100vh; background: radial-gradient(circle, #1a365d 0%, #0a192f 100%); }
         .box { background: white; padding: 35px; border-radius: 25px; width: 330px; text-align: center; border-top: 10px solid #b30000; color: #333; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         input { width: 100%; padding: 15px; margin: 15px 0; border-radius: 30px; border: 2px solid #ddd; text-align: center; outline: none; box-sizing: border-box; font-size: 16px; }
-        button { background: #1b5e20; color: white; border: none; padding: 15px; width: 100%; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        button { background: #1b5e20; color: white; border: none; padding: 15px; width: 100%; border-radius: 30px; cursor: pointer; font-weight: bold; }
         
         #meydanEkrani { display: none; background: #f0f2f5; height: 100vh; flex-direction: column; }
         .header { background: #0a192f; color: gold; padding: 15px; text-align: center; border-bottom: 4px solid #ffd700; }
         .chat-area { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; max-width: 850px; margin: 0 auto; width: 100%; box-sizing: border-box; }
         
-        .msg { max-width: 85%; padding: 12px 18px; border-radius: 18px; color: #333; position: relative; font-size: 15px; line-height: 1.4; }
+        .msg { max-width: 85%; padding: 12px 18px; border-radius: 18px; color: #333; position: relative; font-size: 15px; line-height: 1.5; }
         .msg-lider { align-self: flex-start; background: #fffdf0; border: 2px solid #ffd700; border-radius: 0 20px 20px 20px; box-shadow: 4px 4px 10px rgba(0,0,0,0.1); }
         .msg-bot { align-self: flex-end; background: white; border-right: 8px solid #1b5e20; border-radius: 20px 20px 0 20px; box-shadow: -4px 4px 10px rgba(0,0,0,0.05); }
         
-        .name { font-weight: bold; font-size: 11px; display: block; margin-bottom: 4px; text-transform: uppercase; }
+        .name { font-weight: bold; font-size: 11px; display: block; margin-bottom: 4px; text-transform: uppercase; color: #1b5e20; }
         .unvan-tag { font-size: 10px; background: #444; color: gold; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
         
         .input-bar { background: white; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
         #mInp { flex: 1; margin: 0; color: #333; background: #f9f9f9; border: 1px solid #ccc; border-radius: 30px; padding: 0 20px; }
-        #durum { color: #1b5e20; text-align: center; font-size: 13px; display: none; font-weight: bold; padding: 10px; background: #e8f5e9; }
+        #durum { color: #1b5e20; text-align: center; font-size: 14px; display: none; font-weight: bold; padding: 10px; background: #e8f5e9; }
     </style>
 </head>
 <body>
 
     <div id="girisEkrani">
         <div class="box">
-            <h2 style="margin:0;">ÖZER KARARGAHI</h2>
-            <p style="font-size:12px; color:#666;">Güvenli ve Akıllı Divan</p>
+            <h2 style="margin:0;">ÖZER DİVANI</h2>
+            <p style="font-size:12px; color:#666;">OpenAI Destekli Akıllı Sistem</p>
             <input type="text" id="isimGiris" placeholder="Sait Özer">
-            <button onclick="divanaGir()">DİVANA GİR</button>
+            <button onclick="divanaGir()">KARARGAHA GİR</button>
         </div>
     </div>
 
@@ -52,9 +52,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <script>
-        // ANAHTAR VE KANAL AYARLARI
-        const GEMINI_API_KEY = "AIzaSyBTjVBB_E4M9gOxFxAEjk5f3FC_8Ra3CFw";
-        const KANAL_KODU = "ozer_karargah_ozel_2026"; // Yabancıları engelleyen özel kanal
+        const OPENAI_KEY = "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";
+        const KANAL = "ozer_openai_divan_final";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBJJEJO1FJCvPMF7n5LXX4DYrf3jBEvTlI",
@@ -71,64 +70,4 @@
         const bots = [
             "Kerem Özer", "Ali Özer", "Ahmet Özer", "Mahmut Enes Demiroğlu", "Ömer Faruk Baylan", 
             "Muhammed Ali Baytok", "Mustafa Dostdoğru", "Hacı Abdullah Özer", "Baki Özer", "Faruk Özer",
-            "Mustafa Özer", "Remzi Özer", "Cihan Özer", "Ümran Özer", "Veli Özer", 
-            "Mehmet Özer", "Süleyman Özer", "Osman Özer", "Yusuf Özer", "Hamza Özer"
-        ];
-
-        function divanaGir() {
-            myAd = document.getElementById('isimGiris').value.trim();
-            if(myAd.length < 2) return;
-            liderMi = (myAd.toLowerCase().includes("sait"));
-            document.getElementById('girisEkrani').style.display = 'none';
-            document.getElementById('meydanEkrani').style.display = 'flex';
-            document.getElementById('baslik').innerHTML = myAd + (liderMi ? " <span style='color:gold;'>[LİDER]</span>" : "");
-            dinle();
-        }
-
-        function dinle() {
-            db.collection(KANAL_KODU).orderBy("tarih", "asc").limitToLast(40).onSnapshot(sn => {
-                const box = document.getElementById('chatbox'); box.innerHTML = "";
-                sn.forEach(doc => {
-                    const d = doc.data();
-                    const isSait = d.isim.toLowerCase().includes("sait");
-                    box.innerHTML += `<div class="msg ${isSait ? 'msg-lider' : 'msg-bot'}">
-                        <span class="name" style="color:${isSait ? '#b38f00':'#1b5e20'}">${d.isim}</span>
-                        <div>${d.mesaj}</div></div>`;
-                });
-                box.scrollTop = box.scrollHeight;
-            });
-        }
-
-        async function gonder() {
-            const m = document.getElementById('mInp').value;
-            if(!m) return;
-            document.getElementById('mInp').value = "";
-            
-            // Mesajı Kaydet
-            await db.collection(KANAL_KODU).add({ 
-                isim: myAd, mesaj: m, tarih: firebase.firestore.FieldValue.serverTimestamp() 
-            });
-
-            // Bot Kontrolü
-            let hBot = bots.find(b => m.toLowerCase().includes(b.toLowerCase().split(' ')[0]));
-            if(hBot && liderMi) {
-                document.getElementById('durum').style.display = "block";
-                try {
-                    const prompt = `Sen Özer Aşireti'nden ${hBot}'sun. Liderin Sait Özer sana şunu sordu: "${m}". Saygılı, kısa ve aşiret diliyle bir cevap ver. Başka bir isim kullanma.`;
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-                        method: "POST", headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                    });
-                    const data = await res.json();
-                    const aiCevap = data.candidates[0].content.parts[0].text;
-
-                    await db.collection(KANAL_KODU).add({ 
-                        isim: hBot, mesaj: aiCevap, tarih: firebase.firestore.FieldValue.serverTimestamp() 
-                    });
-                } catch (e) { console.error("Hata"); }
-                document.getElementById('durum').style.display = "none";
-            }
-        }
-    </script>
-</body>
-</html>
+            "Veli Özer", "Mehmet Özer", "Mustafa Özer", "Süleyman
